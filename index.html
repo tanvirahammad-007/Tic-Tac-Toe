@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe Game</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="neon-grid"></div>
+        <div class="floating-symbols">
+            <span class="float-symbol">✕</span>
+            <span class="float-symbol">◯</span>
+            <span class="float-symbol">✕</span>
+            <span class="float-symbol">◯</span>
+            <span class="float-symbol">✕</span>
+            <span class="float-symbol">◯</span>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <audio id="bgMusic" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Intro Screen -->
+    <div id="introScreen" class="intro-screen">
+        <div class="intro-content">
+            <div class="intro-logo">
+                <div class="intro-symbol x-symbol">✕</div>
+                <div class="intro-vs">VS</div>
+                <div class="intro-symbol o-symbol">◯</div>
+            </div>
+            <h1 class="intro-title">TicTacToe</h1>
+            <p class="intro-subtitle">The Ultimate Neon Experience</p>
+            <div class="intro-loader">
+                <div class="loader-bar"></div>
+            </div>
+            <p class="intro-text">Loading Game...</p>
+        </div>
+    </div>
+
+    <!-- Menu Screen -->
+    <div id="menuScreen" class="menu-screen">
+        <h1>🎮TicTacToe</h1>
+        <button onclick="showDifficultySelection()">🤖 vs Computer</button>
+        <button onclick="showNameInput()">👥 2 Players</button>
+        <button onclick="showStats()">📊 Statistics</button>
+        <button onclick="showSettings()">⚙️ Settings</button>
+        <button onclick="showAbout()">ℹ️ About</button>
+    </div>
+
+    <!-- Difficulty Selection -->
+    <div id="difficultyScreen" class="menu-screen hidden">
+        <h1>Select Difficulty</h1>
+        <button onclick="startGame('computer', 'easy')">😊 Easy</button>
+        <button onclick="startGame('computer', 'medium')">😐 Medium</button>
+        <button onclick="startGame('computer', 'hard')">😈 Hard</button>
+        <button onclick="showMenu()">🔙 Back</button>
+    </div>
+
+    <!-- Name Input -->
+    <div id="nameInputScreen" class="name-input-screen hidden">
+        <h1>Enter Names</h1>
+        <input type="text" id="p1Input" placeholder="Player 1 Name" maxlength="15">
+        <input type="text" id="p2Input" placeholder="Player 2 Name" maxlength="15">
+        <button onclick="startGame('twoPlayer')">Start Game</button>
+        <button onclick="showMenu()">🔙 Back</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-screen hidden">
+        <div class="game-header">
+            <button onclick="showMenu()">🏠 Home</button>
+            <div class="score-display">
+                <div class="player-info">
+                    <span id="p1NameDisplay">Player 1</span>
+                    <span id="p1Score">0</span>
+                </div>
+                <span class="vs-text">VS</span>
+                <div class="player-info">
+                    <span id="p2NameDisplay">Player 2</span>
+                    <span id="p2Score">0</span>
+                </div>
+            </div>
+            <button onclick="showSettingsFromGame()">⚙️</button>
+        </div>
+        <div class="turn-indicator">
+            <div id="turnDisplay" class="turn-display">
+                <span id="turnText">Player 1's Turn</span>
+                <span id="turnSymbol" class="turn-symbol">✕</span>
+            </div>
+        </div>
+        <div id="board" class="board"></div>
+    </div>
+
+    <!-- Stats Screen -->
+    <div id="statsScreen" class="stats-screen hidden">
+        <h1>Statistics</h1>
+        <div id="statsGrid" class="stats-grid"></div>
+        <button onclick="resetStats()">🗑️ Reset Stats</button>
+        <button onclick="showMenu()">🔙 Back</button>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settingsScreen" class="settings-screen hidden">
+        <h1>Settings</h1>
+        <div class="setting-item">
+            <span>🎵 Music</span>
+            <div id="musicToggle" class="toggle">
+                <span>🔊</span>
+            </div>
+        </div>
+        <div class="setting-item volume-setting">
+            <span>🔊 Volume</span>
+            <div class="volume-control">
+                <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                <span id="volumePercent">50%</span>
+            </div>
+        </div>
+        <button onclick="showStatsFromSettings()">📊 View Statistics</button>
+        <button onclick="backFromSettings()">🔙 Back</button>
+    </div>
+
+    <!-- About Screen -->
+    <div id="aboutScreen" class="about-screen hidden">
+        <h1>About Game</h1>
+        <div class="about-content">
+            <div class="about-section">
+                <h3 class="about-subtitle">🎮 How to Play</h3>
+                <p>Tic-Tac-Toe is a classic game for two players. Players take turns marking spaces in a 3×3 grid with X or O. The first player to get three marks in a row (horizontally, vertically, or diagonally) wins the game!</p>
+            </div>
+            
+            <div class="about-section">
+                <h3 class="about-subtitle">🎯 Game Modes</h3>
+                <p><strong>VS Computer:</strong> Play against AI with three difficulty levels - Easy, Medium, and Hard!</p>
+                <p><strong>VS Player (Local):</strong> Challenge your friends in local multiplayer mode.</p>
+            </div>
+            
+            <div class="about-section">
+                <h3 class="about-subtitle">✨ Features</h3>
+                <p>• Stunning neon pixel-art design</p>
+                <p>• Track your wins and statistics</p>
+                <p>• Fully responsive - play on any device</p>
+                <p>• Smart AI opponent with minimax algorithm</p>
+                <p>• Offline play - no internet required</p>
+            </div>
+            
+            <div class="about-footer">
+                <p>Created by Team Believers✨</p>
+            </div>
+        </div>
+        <button onclick="showMenu()">🔙 Back</button>
+    </div>
+
+    <!-- Win Modal -->
+    <div id="winModal" class="modal-overlay hidden">
+        <div class="win-modal">
+            <div class="winner-symbol" id="winnerSymbol"></div>
+            <div class="winner-text" id="winnerText">Winner!</div>
+            <div class="modal-buttons">
+                <button class="neon-btn" onclick="closeModal()">Play Again</button>
+                <button class="neon-btn" onclick="goHomeFromModal()">🏠 Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
